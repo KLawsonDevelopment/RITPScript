@@ -6,15 +6,21 @@
 
 #Importing all files to reference later
 
+import requests
 import headerOfEmail
 import to_sender
-import from_sender
+import from_sender 
 import bodyOfEmail
 import responseToEmail
 
 
+
+
 arg = "I am "
 word = 'no'
+
+response = requests.get("https://api.publicapis.org/entries")
+print (response.json())
 
 #Generic call function with argument to test data passing
 
@@ -23,19 +29,19 @@ word = 'no'
 
 
 
-print ('On Main')
-while arg == 'I am ':
-    headerOfEmail.test_para(arg)
-    to_sender.test_para(arg)
-    from_sender.test_para(arg)
-    bodyOfEmail.test_para(arg)
-    responseToEmail.test_para(arg)
+#print ('On Main')
+#while arg == 'I am ':
+ #   headerOfEmail.test_para(arg)
+ #   to_sender.test_para(arg)
+ #   from_sender.test_para(arg)
+ #   bodyOfEmail.test_para(arg)
+ #   responseToEmail.test_para(arg)
 
-    if responseToEmail.trueOrFalse(word)==True:
-        print("True")
-    elif responseToEmail.trueOrFalse(word)==False:
-        print("False")
-    else:
-        print('N/A')
+  #  if responseToEmail.trueOrFalse(word)==True:
+  #      print("True")
+  #  elif responseToEmail.trueOrFalse(word)==False:
+  #      print("False")
+  #  else:
+  #      print('N/A')##
 
-    arg='end'
+   # arg='end'
