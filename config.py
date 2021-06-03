@@ -7,7 +7,7 @@ CLIENT_ID = 'dcde5c47-90ef-4fbc-acae-07a616c1c6d6'
 
 AUTHORITY_URL = 'https://login.microsoftonline.com/common'
 RESOURCE = 'https://graph.microsoft.com'
-API_VERSION = 'beta'
+API_VERSION = 'v1.0'
 
 # This code can be removed after configuring CLIENT_ID and CLIENT_SECRET above.
 if 'ENTER_YOUR' in CLIENT_ID:

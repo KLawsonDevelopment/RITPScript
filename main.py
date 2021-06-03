@@ -8,22 +8,46 @@
 
 import pprint
 import config
+import inspect
 import requests
 import headerOfEmail
 import to_sender
 import from_sender 
 import bodyOfEmail
 import responseToEmail
+import json
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
 
 def main_request(session):
-    print('\nGet user profile -> https://graph.microsoft.com/beta/me')
-    user_profile = session.get(api_endpoint('me'))
-    print(28* ' ' + f'<Response [{user_profile.status_code}]>', f'bytes returned: {len(user_profile.text)}\n')
-    if not user_profile.ok:
-        pprint.pprint(user_profile.json()) # display error
+    print('\nGet user unread messages -> https://graph.microsoft.com/v1.0/me/messages?$filter=isRead ne true')
+
+    user_MAIL = session.get(api_endpoint('me/messages?$filter=isRead ne true'))
+
+    print(28* ' ' + f'<Response [{user_MAIL.json()}]>', f'bytes returned: {len(user_MAIL.text)}\n')
+
+    print(30* ' ' + f'<Loading JSON into a readable format and grabbing IDs.')
+
+    text = json.dumps(user_MAIL.json(), indent=4, sort_keys=True)
+
+    print(32* ' ' + 'Printing value within JSON')
+
+    json_object = json.loads(text)
+
+    length = len(json_object['value'])
+
+    idArray = []
+
+    for key in range(length):
+        print (json_object['value'][key]['id'])
+        idArray.insert(key, json_object['value'][key]['id'])
+        print (28* ' ', "BREAK")  
+        print (idArray)
+        print (28* ' ', "ID BREAK")
+        
+    if not user_MAIL.ok:
+        pprint.pprint(user_MAIL.json()) # display error
         return
 
 if __name__ == '__main__':
