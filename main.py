@@ -34,17 +34,22 @@ def main_request(session):
 
     idArray = []
 
-    for key in range(length):
+    if length>0:
+        for key in range(length):
         # print (json_object['value'][key]['id'])
-        idArray.insert(key, json_object['value'][key]['id'])
+            idArray.insert(key, json_object['value'][key]['id'])
         # print (28* ' ', "BREAK")  
-        print (idArray)
-        print (28* ' ', "ID BREAK")
+            print (idArray)
+            print (28* ' ', "ID BREAK")
+    else:
+        print ('No ID Found, closing loop.')
+
+    
 
     print (35* ' ', 'Beginning ID Loop')
     
     for key in range(length):
-        dataParsing.dataGrab(idArray[key])
+        dataParsing.dataGrab(idArray[key], session)
 
 
 

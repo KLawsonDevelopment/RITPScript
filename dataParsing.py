@@ -7,6 +7,30 @@ import bodyOfEmail
 import responseToEmail
 import json
 
-def dataGrab(iD):
-    print ('ID Below: ')
-    print (iD)
+from helpers import api_endpoint, device_flow_session, profile_photo, \
+    send_mail, sharing_link, upload_file
+
+def dataGrab(iD, session):
+    print('ID Loop, ID used:', iD)
+
+    mail_data_get = session.get(api_endpoint((f'me/messages/{iD}')))
+
+    mail_data = json.dumps(mail_data_get.json(), indent=4, sort_keys=True)
+
+    # print('Email data: ', mail_data)
+
+    print ('Calling Header via Script')
+
+    headerOfEmail.headerGet(iD, session)
+
+
+if __name__ == '__main__':
+    GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
+    if GRAPH_SESSION:
+        dataGrab(GRAPH_SESSION)
+
+#   headerOfEmail.test_para(arg)
+#   to_sender.test_para(arg)
+#   from_sender.test_para(arg)
+#   bodyOfEmail.test_para(arg)
+#   responseToEmail.test_para(arg)
