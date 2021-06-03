@@ -17,9 +17,8 @@ def dataGrab(iD, session):
 
     mail_data = json.dumps(mail_data_get.json(), indent=4, sort_keys=True)
 
-    # print('Email data: ', mail_data)
 
-    print ('Calling Header via Script')
+    print ('Calling Header via Script\n')
 
     headerOfEmail.headerGet(iD, session)
 
