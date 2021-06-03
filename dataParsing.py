@@ -23,12 +23,6 @@ def dataGrab(iD, session):
 
     headerOfEmail.headerGet(iD, session)
 
-
-if __name__ == '__main__':
-    GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
-    if GRAPH_SESSION:
-        dataGrab(GRAPH_SESSION)
-
 #   headerOfEmail.test_para(arg)
 #   to_sender.test_para(arg)
 #   from_sender.test_para(arg)
