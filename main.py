@@ -8,14 +8,9 @@
 
 import pprint
 import config
-import inspect
-import requests
-import headerOfEmail
-import to_sender
-import from_sender 
-import bodyOfEmail
-import responseToEmail
 import json
+import dataParsing
+
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
@@ -25,7 +20,7 @@ def main_request(session):
 
     user_MAIL = session.get(api_endpoint('me/messages?$filter=isRead ne true'))
 
-    print(28* ' ' + f'<Response [{user_MAIL.json()}]>', f'bytes returned: {len(user_MAIL.text)}\n')
+    print(28* ' ' + f'<Response [{user_MAIL.status_code}]>', f'bytes returned: {len(user_MAIL.text)}\n')
 
     print(30* ' ' + f'<Loading JSON into a readable format and grabbing IDs.')
 
@@ -40,11 +35,19 @@ def main_request(session):
     idArray = []
 
     for key in range(length):
-        print (json_object['value'][key]['id'])
+        # print (json_object['value'][key]['id'])
         idArray.insert(key, json_object['value'][key]['id'])
-        print (28* ' ', "BREAK")  
+        # print (28* ' ', "BREAK")  
         print (idArray)
         print (28* ' ', "ID BREAK")
+
+    print (35* ' ', 'Beginning ID Loop')
+    
+    for key in range(length):
+        dataParsing.dataGrab(idArray[key])
+
+
+
         
     if not user_MAIL.ok:
         pprint.pprint(user_MAIL.json()) # display error
