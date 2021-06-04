@@ -36,37 +36,39 @@ def headerGet(iD, session):
     if ipInformation != None:
         print (ipInformation, '\n')
 
+        print (' Testing API to see location\n')
+
+        time.sleep(1)
+
+        ipApiInfoJson = requests.get(f'http://ip-api.com/json/{ipInformation}')
+
+        ipApiInfo = json.dumps(ipApiInfoJson.json(), indent=4, sort_keys=True)
+
+        print (ipApiInfo, '\n')
+
+        ipInfoLoad = json.loads(ipApiInfo)
+
+        print ('Checking Country\n')
+
+        time.sleep(1)
+
+        if ipInfoLoad['country'] == 'United States':
+            print ('Country is United States, checking State\n')
+            headerGrade = headerGrade +1
+
+            if ipInfoLoad['regionName'] == 'Georgia':
+                print ('State is Georgia, exiting loop.\n')
+                headerGrade = headerGrade +1
+
+        else:
+            print('Country is not United States, flagging.\n')
+            headerGrade = headerGrade -1
+
     else:
         print ('No IP found? Flagging.\n')
         headerGrade = headerGrade -1
 
-    print (' Testing API to see location\n')
-
-    time.sleep(1)
-
-    ipApiInfoJson = requests.get(f'http://ip-api.com/json/{ipInformation}')
-
-    ipApiInfo = json.dumps(ipApiInfoJson.json(), indent=4, sort_keys=True)
-
-    print (ipApiInfo, '\n')
-
-    ipInfoLoad = json.loads(ipApiInfo)
-
-    print ('Checking Country\n')
-
-    time.sleep(1)
-
-    if ipInfoLoad['country'] == 'United States':
-        print ('Country is United States, checking State\n')
-        headerGrade = headerGrade +1
-
-        if ipInfoLoad['regionName'] == 'Georgia':
-            print ('State is Georgia, exiting loop.\n')
-            headerGrade = headerGrade +1
-
-    else:
-        print('Country is not United States, flagging.\n')
-        headerGrade = headerGrade -1
+    
 
 
 
