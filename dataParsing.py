@@ -24,6 +24,8 @@ def dataGrab(iD, session):
 
     headerGrade = headerOfEmail.headerGet(iD, session)
 
+    to_sender.toGet(iD, session)
+
 
 
 

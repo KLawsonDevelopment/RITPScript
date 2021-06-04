@@ -1,15 +1,11 @@
 #X-Originating-IP will give the IP of the original sender. Testing via personal email and Tunnel Bear.
 #Not available under VPN, will look for a secondary way of doing it.
-
-import dataParsing
 import json
 import requests
 from pprint import pprint
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
-
-from dataParsing import *
 
 def headerGet(iD, session):
 
