@@ -34,3 +34,5 @@ def toGet(iD, session):
     elif toGrade < 0:
         print ('Recipient grade is negative, flagging.\n')
         print ('To Grade:', toGrade, '\n')
+
+    return toGrade

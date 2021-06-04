@@ -24,14 +24,6 @@ def dataGrab(iD, session):
 
     headerGrade = headerOfEmail.headerGet(iD, session)
 
-    to_sender.toGet(iD, session)
+    toGrade = to_sender.toGet(iD, session)
 
-
-
-
-
-#   headerOfEmail.test_para(arg)
-#   to_sender.test_para(arg)
-#   from_sender.test_para(arg)
-#   bodyOfEmail.test_para(arg)
-#   responseToEmail.test_para(arg)
+    from_sender.fromGet(iD, session)
