@@ -1,6 +1,7 @@
 import json
 import requests
 from pprint import pprint
+import time
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
@@ -15,6 +16,10 @@ def toGet(iD, session):
     to_data_json = json.loads(to_data)
 
     length = len(to_data_json['toRecipients'])
+
+    print('Checking reviever data. \n')
+
+    time.sleep(1)
 
     if length == 0:
         print('No recipients found, flag.\n')

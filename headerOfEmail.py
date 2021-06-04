@@ -3,6 +3,7 @@
 import json
 import requests
 from pprint import pprint
+import time
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
@@ -20,6 +21,8 @@ def headerGet(iD, session):
     mail_header = json.dumps(mail_header_info.json(), indent=4, sort_keys=True)
 
     print(28* ' ', "Grabbing IP information\n" )
+
+    time.sleep(1)
 
     mail_header_json = json.loads(mail_header)
 
@@ -39,6 +42,8 @@ def headerGet(iD, session):
 
     print (' Testing API to see location\n')
 
+    time.sleep(1)
+
     ipApiInfoJson = requests.get(f'http://ip-api.com/json/{ipInformation}')
 
     ipApiInfo = json.dumps(ipApiInfoJson.json(), indent=4, sort_keys=True)
@@ -48,6 +53,8 @@ def headerGet(iD, session):
     ipInfoLoad = json.loads(ipApiInfo)
 
     print ('Checking Country\n')
+
+    time.sleep(1)
 
     if ipInfoLoad['country'] == 'United States':
         print ('Country is United States, checking State\n')

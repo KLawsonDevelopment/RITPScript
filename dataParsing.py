@@ -1,11 +1,10 @@
-import inspect
-import requests
 import headerOfEmail
 import to_sender
 import from_sender 
 import bodyOfEmail
 import responseToEmail
 import json
+import time
 
 from headerOfEmail import *
 
@@ -14,7 +13,7 @@ from helpers import api_endpoint, device_flow_session, profile_photo, \
 
 def dataGrab(iD, session):
 
-    print('ID Loop, ID used:', iD)
+    print('ID Loop, ID used:', iD, '\n')
 
     mail_data_get = session.get(api_endpoint((f'me/messages/{iD}')))
 
@@ -22,8 +21,18 @@ def dataGrab(iD, session):
 
     print ('Calling Header via Script\n')
 
+    time.sleep(3)
+
     headerGrade = headerOfEmail.headerGet(iD, session)
 
+    print ('Calling To via Script\n')
+
+    time.sleep(3)
+
     toGrade = to_sender.toGet(iD, session)
+
+    print ('Calling From via Script\n')
+
+    time.sleep(3)
 
     from_sender.fromGet(iD, session)
