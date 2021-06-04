@@ -7,20 +7,26 @@ import bodyOfEmail
 import responseToEmail
 import json
 
+from headerOfEmail import *
+
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
 
 def dataGrab(iD, session):
+
     print('ID Loop, ID used:', iD)
 
     mail_data_get = session.get(api_endpoint((f'me/messages/{iD}')))
 
     mail_data = json.dumps(mail_data_get.json(), indent=4, sort_keys=True)
 
-
     print ('Calling Header via Script\n')
 
-    headerOfEmail.headerGet(iD, session)
+    headerGrade = headerOfEmail.headerGet(iD, session)
+
+
+
+
 
 #   headerOfEmail.test_para(arg)
 #   to_sender.test_para(arg)

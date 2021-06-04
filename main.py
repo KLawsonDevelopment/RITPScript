@@ -44,13 +44,6 @@ def main_request(session):
             dataParsing.dataGrab(idArray[key], session)
     else:
         print ('No ID Found, closing loop.\n Goodbye!')
-
-    
-
-    
-
-
-
         
     if not user_MAIL.ok:
         pprint.pprint(user_MAIL.json()) # display error

@@ -1,14 +1,23 @@
 #X-Originating-IP will give the IP of the original sender. Testing via personal email and Tunnel Bear.
 #Not available under VPN, will look for a secondary way of doing it.
 
+import dataParsing
 import json
 import requests
+from pprint import pprint
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
 
+from dataParsing import *
+
 def headerGet(iD, session):
-    headerGrade = 0
+
+    headerGrade=0
+    
+    nameSearch = 'X-Originating-IP'
+
+    ipInformation = None
 
     mail_header_info = session.get(api_endpoint((f'me/messages/{iD}/?select=internetMessageHeaders')))
 
@@ -17,14 +26,6 @@ def headerGet(iD, session):
     print(28* ' ', "Grabbing IP information\n" )
 
     mail_header_json = json.loads(mail_header)
-
-    # ipInformation = mail_header['internetMessageHeaders']['X-Originating-IP']
-
-    # print (mail_header_json['internetMessageHeaders'][20]['name'])
-
-    nameSearch = 'X-Originating-IP'
-
-    ipInformation = None
 
     length = len(mail_header_json['internetMessageHeaders'])
 
@@ -35,6 +36,7 @@ def headerGet(iD, session):
         
     if ipInformation != None:
         print (ipInformation, '\n')
+
     else:
         print ('No IP found? Flagging.\n')
         headerGrade = headerGrade -1
@@ -57,22 +59,26 @@ def headerGet(iD, session):
 
         if ipInfoLoad['regionName'] == 'Georgia':
             print ('State is Georgia, exiting loop.\n')
-            headerGreade = headerGrade +1
+            headerGrade = headerGrade +1
 
     else:
         print('Country is not United States, flagging.\n')
         headerGrade = headerGrade -1
 
+
+
     if headerGrade == 0:
         print ('Uncertain about email origin status, leaving neutral.\n')
-        print('Header Grade: ',headerGrade, '\n')
+        print('Header Grade:',headerGrade, '\n')
 
     elif headerGrade>0:
         print ('Header seemingly is from a secure enviornment, positive review.\n')
-        print('Header Grade: ',headerGrade, '\n')
+        print('Header Grade:',headerGrade, '\n')
 
     elif headerGrade<0:
         print ('Header has failed test, giving negative mark.\n')
-        print('Header Grade: ',headerGrade, '\n')
+        print('Header Grade:',headerGrade, '\n')
+
+    return headerGrade
 
 
