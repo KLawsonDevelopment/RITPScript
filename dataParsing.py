@@ -19,25 +19,25 @@ def dataGrab(iD, session):
 
     mail_data = json.dumps(mail_data_get.json(), indent=4, sort_keys=True)
 
-    print ('Calling Header via Script\n')
+    # print ('Calling Header via Script\n')
 
-    time.sleep(3)
+    # time.sleep(3)
 
-    headerGrade = headerOfEmail.headerGet(iD, session)
+    # headerGrade = headerOfEmail.headerGet(iD, session)
 
-    print ('Calling To via Script\n')
+    # print ('Calling To via Script\n')
 
-    time.sleep(3)
+    # time.sleep(3)
 
-    toGrade = to_sender.toGet(iD, session)
+    # toGrade = to_sender.toGet(iD, session)
 
-    print ('Calling From via Script\n')
+    # print ('Calling From via Script\n')
 
-    time.sleep(3)
+    # time.sleep(3)
 
-    fromGrade = from_sender.fromGet(iD, session)
+    # fromGrade = from_sender.fromGet(iD, session)
 
-    print ('Calling Body via Script\n')
+    # print ('Calling Body via Script\n')
 
     time.sleep(3)
 
