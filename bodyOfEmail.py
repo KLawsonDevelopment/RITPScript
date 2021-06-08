@@ -24,10 +24,6 @@ def bodyGet(iD, session):
         body_data_json = json.dumps(body_data_json['body']['content'])
         body_data_json = json.loads(body_data_json)
 
-    # body_data_json = json.dumps(body_data_json['body']['content'].split('-----Original Message-----', 1)[1])
-
-    # body_data_json = json.loads(body_data_json)
-
     print(body_data_json)
 
     # disgusting regex below

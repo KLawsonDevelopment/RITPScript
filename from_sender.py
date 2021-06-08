@@ -33,19 +33,19 @@ def fromGet(iD, session):
                 toAddress = from_data_json['toRecipients'][0]['emailAddress']['address'].split("@")[1]
                 print (toAddress, '\n')
 
+    else:
+        if from_data_json['toRecipients'] == []:
+            pprint(from_data_json['toRecipients'])
         else:
-            if from_data_json['toRecipients'] == []:
-                pprint(from_data_json['toRecipients'])
-            else:
-                pprint(from_data_json['toRecipients'][0]['emailAddress']['address'])
-                toAddress = from_data_json['toRecipients'][0]['emailAddress']['address'].split("@")[1]
-                print (toAddress, '\n')
-            if from_data_json['from'] == []:
-                pprint(from_data_json['from'])
-            else:
-                pprint(from_data_json['from']['emailAddress']['address'])
-                fromAddress = from_data_json['from']['emailAddress']['address'].split("@")[1]
-                print(fromAddress, '\n')
+            pprint(from_data_json['toRecipients'][0]['emailAddress']['address'])
+            toAddress = from_data_json['toRecipients'][0]['emailAddress']['address'].split("@")[1]
+            print (toAddress, '\n')
+        if from_data_json['from'] == []:
+            pprint(from_data_json['from'])
+        else:
+            pprint(from_data_json['from']['emailAddress']['address'])
+            fromAddress = from_data_json['from']['emailAddress']['address'].split("@")[1]
+            print(fromAddress, '\n')
 
 
 

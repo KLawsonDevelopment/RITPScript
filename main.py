@@ -46,7 +46,7 @@ def main_request(session):
         main_request(session)
     else:
         print ('No ID found, looping around in 30 seconds to continue loop.\n')
-        time.sleep(10)
+        time.sleep(30)
         main_request(session)
 
         
