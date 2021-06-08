@@ -43,6 +43,10 @@ def bodyGet(iD, session):
             if z:
                 print(hyperLinks[link])
                 print(checkDomain[line])
-                print('match')
+                print('match\n')
+                bodyGrade = bodyGrade+1
                 break
-    
+            elif line == domainLength - 1: 
+                bodyGrade = bodyGrade - 1
+
+    print('Body Grade:',bodyGrade,'\n')
