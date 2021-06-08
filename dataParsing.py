@@ -35,13 +35,13 @@ def dataGrab(iD, session):
 
     # time.sleep(3)
 
-    # fromGrade = from_sender.fromGet(iD, session)
+    fromGrade = from_sender.fromGet(iD, session)
 
     # print ('Calling for Body via Script\n')
 
     # time.sleep(3)
 
-    bodyGrade = bodyOfEmail.bodyGet(iD, session)
+    # bodyGrade = bodyOfEmail.bodyGet(iD, session)
 
     # print ('Calling for Response via Script')
 
