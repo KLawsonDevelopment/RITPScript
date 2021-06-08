@@ -83,3 +83,5 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
                                 json = patchRequest)
 
     print('Did Message Patch:',isMessageRead)
+
+    return

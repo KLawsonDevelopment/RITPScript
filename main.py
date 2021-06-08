@@ -10,6 +10,7 @@ import pprint
 import config
 import json
 import dataParsing
+import time
 
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
@@ -42,12 +43,18 @@ def main_request(session):
         print (35* ' ', 'Beginning ID Loop\n')
         for key in range(length):
             dataParsing.dataGrab(idArray[key], session)
+        main_request(session)
     else:
-        print ('No ID Found, closing loop.\n Goodbye!')
+        print ('No ID found, looping around in 30 seconds to continue loop.\n')
+        time.sleep(10)
+        main_request(session)
+
         
     if not user_MAIL.ok:
         pprint.pprint(user_MAIL.json()) # display error
         return
+
+    
 
 if __name__ == '__main__':
     GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
