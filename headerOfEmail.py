@@ -59,6 +59,9 @@ def headerGet(iD, session):
             if ipInfoLoad['regionName'] == 'Georgia':
                 print ('State is Georgia, exiting loop.\n')
                 headerGrade = headerGrade +1
+            else:
+                print('State is not Georgia, flagging\n')
+                headerGrade = headerGrade -1
 
         else:
             print('Country is not United States, flagging.\n')
