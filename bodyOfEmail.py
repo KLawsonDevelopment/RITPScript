@@ -50,3 +50,5 @@ def bodyGet(iD, session):
                 bodyGrade = bodyGrade - 1
 
     print('Body Grade:',bodyGrade,'\n')
+
+    return bodyGrade
