@@ -34,7 +34,6 @@ def bodyGet(iD, session):
 
     for link in range(length):
         for line in range(domainLength):
-            print (link)
             hyperLinks[link] = hyperLinks[link].replace("http://www.", '')
             hyperLinks[link] = hyperLinks[link].replace('https://www.', '')
             hyperLinks[link] = hyperLinks[link].replace('https://', '')
@@ -46,7 +45,4 @@ def bodyGet(iD, session):
                 print(checkDomain[line])
                 print('match')
                 break
-            else:
-                print('no match')
-                print(hyperLinks[link])
     
