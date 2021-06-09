@@ -43,11 +43,11 @@ def main_request(session):
         print (35* ' ', 'Beginning ID Loop\n')
         for key in range(length):
             dataParsing.dataGrab(idArray[key], session)
-        main_request(session)
+        # main_request(session)
     else:
         print ('No ID found, looping around in 30 seconds to continue loop.\n')
         time.sleep(30)
-        main_request(session)
+        # main_request(session)
 
         
     if not user_MAIL.ok:

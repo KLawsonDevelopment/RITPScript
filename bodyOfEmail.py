@@ -24,7 +24,7 @@ def bodyGet(iD, session):
         body_data_json = json.dumps(body_data_json['body']['content'])
         body_data_json = json.loads(body_data_json)
 
-    print(body_data_json)
+    # print(body_data_json)
 
     # disgusting regex below
 
@@ -40,6 +40,9 @@ def bodyGet(iD, session):
     checkDomain = domainFile.read().splitlines()
     domainLength = len(checkDomain)
     comCheck = '.com'
+    pngCheck = '.png'
+    positiveList = [1]
+    listLength = len(positiveList)
 
     for link in range(length):
         for line in range(domainLength):
@@ -47,15 +50,34 @@ def bodyGet(iD, session):
             hyperLinks[link] = hyperLinks[link].replace('https://www.', '')
             hyperLinks[link] = hyperLinks[link].replace('https://', '')
             hyperLinks[link] = hyperLinks[link].replace('www.', '')
-            hyperLinks[link] = hyperLinks[link].split(comCheck, 1)[0]
+            
+            # hyperLinks[link] = hyperLinks[link].split(comCheck, 1)[0]
+            # print(hyperLinks[link])
             z = re.match(hyperLinks[link], checkDomain[line])
-            if z:
-                print(hyperLinks[link])
-                print(checkDomain[line])
-                print('match\n')
-                bodyGrade = bodyGrade+1
+            y = hyperLinks[link][-4:]
+            # print(y)
+
+                            
+            if y == '.png':
+                print('This is an image, skipping:', hyperLinks[link], '\n')
                 break
+
+            elif z:
+                print('Checking for positive matches in list\n')
+                if hyperLinks[link] in positiveList:
+                    print ('This has already been added to a positive note.\n')
+                    print (hyperLinks[link])
+                    break
+                else:
+                    print(hyperLinks[link])
+                    print(checkDomain[line])
+                    print('match\n')
+                    positiveList.append(hyperLinks[link])
+                    bodyGrade = bodyGrade+1
+                    break
+                
             elif line == domainLength - 1: 
+                print('This link was not found safe:', hyperLinks[link], '\n')
                 bodyGrade = bodyGrade - 1
 
     print('Body Grade:',bodyGrade,'\n')
