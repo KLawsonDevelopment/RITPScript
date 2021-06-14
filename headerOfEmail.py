@@ -34,7 +34,7 @@ def headerGet(iD, session):
             ipInformation = ipNoSplice[1:-1]
         
     if ipInformation != None:
-        print (ipInformation, '\n')
+        # print (ipInformation, '\n')
 
         print (' Testing API to see location\n')
 
@@ -44,7 +44,7 @@ def headerGet(iD, session):
 
         ipApiInfo = json.dumps(ipApiInfoJson.json(), indent=4, sort_keys=True)
 
-        print (ipApiInfo, '\n')
+        # print (ipApiInfo, '\n')
 
         ipInfoLoad = json.loads(ipApiInfo)
 
