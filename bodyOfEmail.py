@@ -50,15 +50,25 @@ def bodyGet(iD, session):
             hyperLinks[link] = hyperLinks[link].replace('https://www.', '')
             hyperLinks[link] = hyperLinks[link].replace('https://', '')
             hyperLinks[link] = hyperLinks[link].replace('www.', '')
+
+            periodCount = hyperLinks[link].count('.') > 1
+
+            # print ('More than one Period?:', periodCount)
             
             # hyperLinks[link] = hyperLinks[link].split(comCheck, 1)[0]
             # print(hyperLinks[link])
             z = re.match(hyperLinks[link], checkDomain[line])
             y = hyperLinks[link][-4:]
+
+            # print(z)
             # print(y)
 
                             
             if y == '.png':
+                print('This is an image, skipping:', hyperLinks[link], '\n')
+                break
+
+            elif y == '.jpg':
                 print('This is an image, skipping:', hyperLinks[link], '\n')
                 break
 
@@ -75,6 +85,9 @@ def bodyGet(iD, session):
                     positiveList.append(hyperLinks[link])
                     bodyGrade = bodyGrade+1
                     break
+
+            elif periodCount == True:
+                hyperLinks[link] = hyperLinks[link].replace('.', '', 1)
                 
             elif line == domainLength - 1: 
                 print('This link was not found safe:', hyperLinks[link], '\n')

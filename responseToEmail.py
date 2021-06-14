@@ -43,11 +43,21 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
     else:
         bodyGoB = 'Bad'
 
+    totalArray =[]
+    totalArray.append(headerGoB)
+    totalArray.append(toGoB)
+    totalArray.append(fromGoB)
+    totalArray.append(bodyGoB)
+
+    immediateFail = totalArray.count('Bad')
+
     totalGrade = headerGrade + toGrade + fromGrade + bodyGrade
 
     goodOrBad = str
 
-    if totalGrade > 0:
+    if immediateFail > 1:
+        goodOrBad = 'We believe this email should not be opened.'
+    elif totalGrade > 0:
         goodOrBad = 'This email should be safe to open.'
     elif totalGrade == 0:
         goodOrBad = 'We are not sure if this email is safe to open.'

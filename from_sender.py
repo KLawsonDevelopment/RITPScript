@@ -19,6 +19,8 @@ def fromGet(iD, session):
 
     from_data_json = json.loads(from_data)
 
+    # print(from_data_json['body']['content'].split('To')[2])
+
     if '-----Original Message-----' in from_data_json['body']['content']:
         body_data_json = json.dumps(from_data_json['body']['content'].split('-----Original Message-----', 1)[1])
         body_data_json = json.loads(body_data_json)
@@ -26,12 +28,29 @@ def fromGet(iD, session):
         if 'From:' in body_data_json:
             fromAddress= body_data_json.split('From: ', 1)[1].split('@')[1].split('>')[0]
             pprint(fromAddress)
+
             if from_data_json['toRecipients'] == []:
                 pprint(from_data_json['toRecipients'])
             else:
                 pprint(from_data_json['toRecipients'][0]['emailAddress']['address'])
                 toAddress = from_data_json['toRecipients'][0]['emailAddress']['address'].split("@")[1]
                 print (toAddress, '\n')
+
+    elif 'FW:' in from_data_json['body']['content']:
+        body_data_json = json.dumps(from_data_json['body']['content'].split('FW:')[1])
+        body_data_json = json.loads(body_data_json)
+
+        if 'From:' in body_data_json:
+            fromAddress = body_data_json.split('From:')[1].split('@')[1].split('>')[0]
+            pprint(fromAddress)
+            if from_data_json['toRecipients'] == []:
+                pprint(from_data_json['toRecipients'])
+            else:
+                pprint(from_data_json['toRecipients'][0]['emailAddress']['address'])
+                toAddress = from_data_json['toRecipients'][0]['emailAddress']['address'].split("@")[1]
+                print (toAddress, '\n')
+
+
 
     else:
         if from_data_json['toRecipients'] == []:
