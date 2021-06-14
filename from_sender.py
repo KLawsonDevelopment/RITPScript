@@ -77,10 +77,15 @@ def fromGet(iD, session):
     domainFile = open('domains.txt', 'r')
     checkDomain = domainFile.read().splitlines()
     domainLength = len(checkDomain)
-    z = re.match(fromAddress, checkDomain)
+    
+    for line in range(domainLength):
+        z = re.match(fromAddress, checkDomain[line])
+        if z:
+            break
 
     if z:
         print('Address found in the Domain List, safe.\n')
+        fromGrade = fromGrade +1
 
     elif fromAddress == toAddress:
         print('Same address, same org. Good sign.\n')
