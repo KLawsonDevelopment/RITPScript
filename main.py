@@ -4,22 +4,26 @@
 # This set of scripts is designed by Keith Lawson, and created while working for Rocket IT. If you need development help with this program,
 # send an email to KLawsondevelopment@gmail.com or KLawson@rocketit.com 
 
-#Importing all files to reference later
-
 import pprint
 import config
 import json
 import dataParsing
 import time
 
+# importing from the helpers file that Microsoft provides to help with API talking
 
 from helpers import api_endpoint, device_flow_session, profile_photo, \
     send_mail, sharing_link, upload_file
 
 def main_request(session):
+
+    #Calling API with the filter that looks for any unread emails.
+
     print('\nGet user unread messages -> https://graph.microsoft.com/v1.0/me/messages?$filter=isRead ne true')
 
     user_MAIL = session.get(api_endpoint('me/messages?$filter=isRead ne true'))
+
+    #Success or failure status code from the JSON
 
     print(28* ' ' + f'<Response [{user_MAIL.status_code}]>', f'bytes returned: {len(user_MAIL.text)}\n')
 
@@ -27,20 +31,32 @@ def main_request(session):
 
     text = json.dumps(user_MAIL.json(), indent=4, sort_keys=True)
 
-    print(32* ' ' + 'Printing value within JSON')
+    #Loading text into a python directory to grab data as needed
 
     json_object = json.loads(text)
 
+    #Created a length for a for loop so that the IDs can loop properly
+
     length = len(json_object['value'])
+
+    #Made and array/list to actually hold the JSON data
 
     idArray = []
 
+    # If statement checking to see if any IDs have been found. If an ID is found, loop through each key one by one. If no ID is found, loop the script after 30 seconds.
+
     if length>0:
+
+        #For loop begins here. Grabbing the ID, putting it into the array, printing what IDs are there.
+
         for key in range(length):
             idArray.insert(key, json_object['value'][key]['id'])
             print (idArray)
             print (28* ' ', "ID BREAK\n")
         print (35* ' ', 'Beginning ID Loop\n')
+
+        #Loop through each individual key by going to Data Parsing.
+
         for key in range(length):
             dataParsing.dataGrab(idArray[key], session)
         main_request(session)
