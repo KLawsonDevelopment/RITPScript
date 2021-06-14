@@ -1,5 +1,6 @@
 import json
 import requests
+import re
 from pprint import pprint
 import time
 
@@ -73,13 +74,17 @@ def fromGet(iD, session):
     
     print('Checking sender data. \n')
     
+    domainFile = open('domains.txt', 'r')
+    checkDomain = domainFile.read().splitlines()
+    domainLength = len(checkDomain)
+    z = re.match(fromAddress, checkDomain)
 
+    if z:
+        print('Address found in the Domain List, safe.\n')
 
-    if fromAddress == toAddress:
+    elif fromAddress == toAddress:
         print('Same address, same org. Good sign.\n')
         fromGrade = fromGrade +1
-
-    # PUT AN ELIF HERE WITH THE ORG DOMAINS LISTED
 
     else:
         print('Not same address, not same org. Bad sign.\n')
