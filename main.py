@@ -17,6 +17,9 @@ from helpers import api_endpoint, device_flow_session, profile_photo, \
 
 def main_request(session):
 
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S")
+
     #Calling API with the filter that looks for any unread emails.
 
     print('\nGet user unread messages -> https://graph.microsoft.com/v1.0/me/messages?$filter=isRead ne true')
@@ -61,8 +64,9 @@ def main_request(session):
             dataParsing.dataGrab(idArray[key], session)
         main_request(session)
     else:
-        print ('No ID found, looping around in 30 seconds to continue loop.\n')
-        time.sleep(30)
+        print ('No ID found, looping around in 60 seconds to continue loop.\n')
+        print ('Time:', current_time)
+        time.sleep(60)
         main_request(session)
 
         
