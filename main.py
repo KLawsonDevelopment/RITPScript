@@ -64,9 +64,9 @@ def main_request(session):
             dataParsing.dataGrab(idArray[key], session)
         main_request(session)
     else:
-        print ('No ID found, looping around in 60 seconds to continue loop.\n')
+        print ('No ID found, looping around in 30 seconds to continue loop.\n')
         print ('Time:', current_time)
-        time.sleep(60)
+        time.sleep(30)
         main_request(session)
 
         
