@@ -3,8 +3,7 @@ import requests
 from pprint import pprint
 import time
 
-from helpers import api_endpoint, device_flow_session, profile_photo, \
-    send_mail, sharing_link, upload_file
+from helpers import api_endpoint
 
 def toGet(iD, session):
     toGrade = 0

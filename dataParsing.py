@@ -12,8 +12,7 @@ import time
 
 from headerOfEmail import *
 
-from helpers import api_endpoint, device_flow_session, profile_photo, \
-    send_mail, sharing_link, upload_file
+from helpers import api_endpoint
 
 #Main function. This goes through each other part of the script and gets the grades as needed.
 

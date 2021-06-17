@@ -1,12 +1,11 @@
-#X-Originating-IP will give the IP of the original sender. Testing via personal email and Tunnel Bear.
+#X-Originating-IP will give the IP of the original sender.
 #Not available under VPN, will look for a secondary way of doing it.
 import json
 import requests
 from pprint import pprint
 import time
 
-from helpers import api_endpoint, device_flow_session, profile_photo, \
-    send_mail, sharing_link, upload_file
+from helpers import api_endpoint
 
 def headerGet(iD, session):
 
@@ -34,7 +33,6 @@ def headerGet(iD, session):
             ipInformation = ipNoSplice[1:-1]
         
     if ipInformation != None:
-        # print (ipInformation, '\n')
 
         print (' Testing API to see location\n')
 
@@ -43,8 +41,6 @@ def headerGet(iD, session):
         ipApiInfoJson = requests.get(f'http://ip-api.com/json/{ipInformation}')
 
         ipApiInfo = json.dumps(ipApiInfoJson.json(), indent=4, sort_keys=True)
-
-        # print (ipApiInfo, '\n')
 
         ipInfoLoad = json.loads(ipApiInfo)
 
@@ -70,9 +66,6 @@ def headerGet(iD, session):
     else:
         print ('No IP found? Flagging.\n')
         headerGrade = headerGrade -1
-
-    
-
 
 
     if headerGrade == 0:

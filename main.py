@@ -10,15 +10,17 @@ import json
 import dataParsing
 import time
 
+
+
 # importing from the helpers file that Microsoft provides to help with API talking
 
-from helpers import api_endpoint, device_flow_session, profile_photo, \
-    send_mail, sharing_link, upload_file
+t = time.localtime()
+current_time = time.strftime("%H:%M:%S")
+
+
+from helpers import api_endpoint, device_flow_session
 
 def main_request(session):
-
-    t = time.localtime()
-    current_time = time.strftime("%H:%M:%S")
 
     #Calling API with the filter that looks for any unread emails.
 
@@ -29,6 +31,14 @@ def main_request(session):
     #Success or failure status code from the JSON
 
     print(28* ' ' + f'<Response [{user_MAIL.status_code}]>', f'bytes returned: {len(user_MAIL.text)}\n')
+
+    # user_MAIL.status_code = '401'
+
+    if user_MAIL.status_code == '401':
+        print(38* '', 'Token has expired, attempting to get new one.')
+        GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
+        if GRAPH_SESSION:
+            main_request(GRAPH_SESSION)
 
     print(30* ' ' + f'<Loading JSON into a readable format and grabbing IDs.')
 
@@ -71,7 +81,8 @@ def main_request(session):
 
         
     if not user_MAIL.ok:
-        pprint.pprint(user_MAIL.json()) # display error
+        main_request(session)
+        # pprint.pprint(user_MAIL.json()) # display error
         return
 
     

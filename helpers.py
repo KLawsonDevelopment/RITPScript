@@ -6,12 +6,41 @@ import mimetypes
 import os
 import urllib
 import webbrowser
+import time
 
 from adal import AuthenticationContext
 import pyperclip
 import requests
 
 import config
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+
+# Enter Code : otc, paste code here
+# Submit button for Code: idSIButton9
+# Email: i0116, testphishing@rocketit.com
+# Submit button for Email : idSIButton9
+# Password: i0118, not listing here.
+# Submit button for Password: idSIButton9
+# Test Phishing: table, click
+# Submit button for Sign In: idSIButton9
+
+driver = webdriver.Firefox(executable_path='./geckodriver')
+driver.get('https://microsoft.com/devicelogin')
+time.sleep(5)
+ignored_exceptions=(NoSuchElementException,StaleElementReferenceException,)
+submitButton = 'idSIButton9'
+file = open('(oolAmber91.txt')
+lines = file.readlines()
+email = lines[0]
+passW = lines[1]
 
 def api_endpoint(url):
     """Convert a relative path such as /me/photo/$value to a full URI based
@@ -22,7 +51,7 @@ def api_endpoint(url):
     return urllib.parse.urljoin(f'{config.RESOURCE}/{config.API_VERSION}/',
                                 url.lstrip('/'))
 
-def device_flow_session(client_id, auto=False):
+def device_flow_session(client_id, auto=True):
     """Obtain an access token from Azure AD (via device flow) and create
     a Requests session instance ready to make authenticated calls to
     Microsoft Graph.
@@ -42,10 +71,30 @@ def device_flow_session(client_id, auto=False):
     # display user instructions
     if auto:
         pyperclip.copy(device_code['user_code']) # copy user code to clipboard
-        webbrowser.open(device_code['verification_url']) # open browser
+        # webbrowser.open(device_code['verification_url']) # open browser
         print(f'The code {device_code["user_code"]} has been copied to your clipboard, '
               f'and your web browser is opening {device_code["verification_url"]}. '
               'Paste the code to sign in.')
+        print('Sending code\n')
+
+        web_interface('otc', device_code['user_code'])
+
+        time.sleep(3)
+
+        web_interface('i0116', email)
+
+        time.sleep(3)
+
+        web_interface('i0118', passW)
+
+        time.sleep(3)
+
+        submit_web()
+
+        time.sleep(2)
+
+        driver.close()
+
     else:
         print(device_code['message'])
 
@@ -61,39 +110,6 @@ def device_flow_session(client_id, auto=False):
                             'x-client-SKU': 'sample-python-adal'})
     return session
 
-def profile_photo(session, *, user_id='me', save_as=None):
-    """Get profile photo, and optionally save a local copy.
-
-    session = requests.Session() instance with Graph access token
-    user_id = Graph id value for the user, or 'me' (default) for current user
-    save_as = optional filename to save the photo locally. Should not include an
-              extension - the extension is determined by photo's content type.
-
-    Returns a tuple of the photo (raw data), HTTP status code, content type, saved filename.
-    """
-
-    endpoint = 'me/photo/$value' if user_id == 'me' else f'users/{user_id}/$value'
-    photo_response = session.get(api_endpoint(endpoint),
-                                 stream=True)
-    photo_status_code = photo_response.status_code
-    if photo_response.ok:
-        photo = photo_response.raw.read()
-        # note we remove /$value from endpoint to get metadata endpoint
-        metadata_response = session.get(api_endpoint(endpoint[:-7]))
-        content_type = metadata_response.json().get('@odata.mediaContentType', '')
-    else:
-        photo = ''
-        content_type = ''
-
-    if photo and save_as:
-        extension = content_type.split('/')[1]
-        filename = save_as + '.' + extension
-        with open(filename, 'wb') as fhandle:
-            fhandle.write(photo)
-    else:
-        filename = ''
-
-    return (photo, photo_status_code, content_type, filename)
 
 def send_mail(session, *, subject, recipients, body='', content_type='HTML',
               attachments=None):
@@ -138,54 +154,30 @@ def send_mail(session, *, subject, recipients, body='', content_type='HTML',
                         headers={'Content-Type': 'application/json'},
                         json=email_msg)
 
-def sharing_link(session, *, item_id, link_type='view'):
-    """Get a sharing link for an item in OneDrive.
+def web_interface(element, text):
 
-    session   = requests.Session() instance with Graph access token
-    item_id   = the id of the DriveItem (the target of the link)
-    link_type = 'view' (default), 'edit', or 'embed' (OneDrive Personal only)
+    actions = ActionChains(driver)
 
-    Returns a tuple of the response object and the sharing link.
-    """
-    endpoint = f'me/drive/items/{item_id}/createLink'
-    response = session.post(api_endpoint(endpoint),
-                            headers={'Content-Type': 'application/json'},
-                            json={'type': link_type})
+    print('Inputting text\n')
 
-    if response.ok:
-        # status 201 = link created, status 200 = existing link returned
-        return (response, response.json()['link']['webUrl'])
-    return (response, '')
+    Elem = WebDriverWait(driver, timeout=10, ignored_exceptions=ignored_exceptions).until(expected_conditions.presence_of_element_located((By.ID, element)))
+    submitElem = WebDriverWait(driver, timeout=10, ignored_exceptions=ignored_exceptions).until(expected_conditions.presence_of_element_located((By.ID, submitButton)))
+    
+    Elem.clear()
+    actions.move_to_element(Elem)
+    actions.click(Elem)
+    actions.send_keys(text)
+    actions.move_to_element(submitElem)
+    actions.click(submitElem)
+    actions.perform()
+    
 
-def upload_file(session, *, filename, folder=None):
-    """Upload a file to OneDrive for Business.
+def submit_web():
+    actions = ActionChains(driver)
 
-    session  = requests.Session() instance with Graph access token
-    filename = local filename; may include a path
-    folder   = destination subfolder/path in OneDrive for Business
-               None (default) = root folder
+    submitElem = WebDriverWait(driver, timeout=10, ignored_exceptions=ignored_exceptions).until(expected_conditions.presence_of_element_located((By.ID, submitButton)))
 
-    File is uploaded and the response object is returned.
-    If file already exists, it is overwritten.
-    If folder does not exist, it is created.
-
-    API documentation:
-    https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/driveitem_put_content
-    """
-    fname_only = os.path.basename(filename)
-
-    # create the Graph endpoint to be used
-    if folder:
-        # create endpoint for upload to a subfolder
-        endpoint = f'me/drive/root:/{folder}/{fname_only}:/content'
-    else:
-        # create endpoint for upload to drive root folder
-        endpoint = f'me/drive/root/children/{fname_only}/content'
-
-    content_type, _ = mimetypes.guess_type(fname_only)
-    with open(filename, 'rb') as fhandle:
-        file_content = fhandle.read()
-
-    return session.put(api_endpoint(endpoint),
-                       headers={'content-type': content_type},
-                       data=file_content)
+    
+    actions.move_to_element(submitElem)
+    actions.click(submitElem)
+    actions.perform()

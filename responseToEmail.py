@@ -5,8 +5,7 @@ from pprint import pprint
 import time
 import re
 
-from helpers import api_endpoint, device_flow_session, profile_photo, \
-    send_mail, sharing_link, upload_file
+from helpers import api_endpoint, send_mail
 
 def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
 
