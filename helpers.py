@@ -7,6 +7,7 @@ import os
 import urllib
 import webbrowser
 import time
+import urllib3
 
 from adal import AuthenticationContext
 import pyperclip
@@ -46,10 +47,21 @@ def api_endpoint(url):
     """Convert a relative path such as /me/photo/$value to a full URI based
     on the current RESOURCE and API_VERSION settings in config.py.
     """
-    if urllib.parse.urlparse(url).scheme in ['http', 'https']:
-        return url # url is already complete
-    return urllib.parse.urljoin(f'{config.RESOURCE}/{config.API_VERSION}/',
-                                url.lstrip('/'))
+
+    print('Starting While loop \n')
+
+    while True:
+        try:
+            time.sleep(2)
+            print('Grabbing URL\n')
+            if urllib.parse.urlparse(url).scheme in ['http', 'https']:
+                return url # url is already complete
+            return urllib.parse.urljoin(f'{config.RESOURCE}/{config.API_VERSION}/',
+                                        url.lstrip('/'))
+        except Exception as e:
+            print('Timeout\n')
+            pass
+
 
 def device_flow_session(client_id, auto=True):
     """Obtain an access token from Azure AD (via device flow) and create
@@ -77,15 +89,15 @@ def device_flow_session(client_id, auto=True):
               'Paste the code to sign in.')
         print('Sending code\n')
 
-        web_interface('otc', device_code['user_code'])
+        web_interface('otc', device_code['user_code'], 'MFA Code')
 
         time.sleep(3)
 
-        web_interface('i0116', email)
+        web_interface('i0116', email, 'email')
 
         time.sleep(3)
 
-        web_interface('i0118', passW)
+        web_interface('i0118', passW, 'password')
 
         time.sleep(3)
 
@@ -154,11 +166,11 @@ def send_mail(session, *, subject, recipients, body='', content_type='HTML',
                         headers={'Content-Type': 'application/json'},
                         json=email_msg)
 
-def web_interface(element, text):
+def web_interface(element, text, target):
 
     actions = ActionChains(driver)
 
-    print('Inputting text\n')
+    print('Inputting', target, '\n')
 
     Elem = WebDriverWait(driver, timeout=10, ignored_exceptions=ignored_exceptions).until(expected_conditions.presence_of_element_located((By.ID, element)))
     submitElem = WebDriverWait(driver, timeout=10, ignored_exceptions=ignored_exceptions).until(expected_conditions.presence_of_element_located((By.ID, submitButton)))

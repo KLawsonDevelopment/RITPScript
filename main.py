@@ -14,17 +14,19 @@ import time
 
 # importing from the helpers file that Microsoft provides to help with API talking
 
-t = time.localtime()
-current_time = time.strftime("%H:%M:%S")
-
 
 from helpers import api_endpoint, device_flow_session
 
 def main_request(session):
 
+    t = time.localtime()
+    current_time = time.strftime("%H:%M:%S")
+
     #Calling API with the filter that looks for any unread emails.
 
     print('\nGet user unread messages -> https://graph.microsoft.com/v1.0/me/messages?$filter=isRead ne true')
+
+    print('API Endpoint Start')
 
     user_MAIL = session.get(api_endpoint('me/messages?$filter=isRead ne true'))
 
@@ -35,7 +37,19 @@ def main_request(session):
     # user_MAIL.status_code = '401'
 
     if user_MAIL.status_code == '401':
-        print(38* '', 'Token has expired, attempting to get new one.')
+        print(38* '', 'Token has expired, attempting to get new one. String exception.\n')
+        GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
+        if GRAPH_SESSION:
+            main_request(GRAPH_SESSION)
+
+    elif user_MAIL.status_code == [401]:
+        print(38* '', 'Token has expired, attempting to get new one. Array exception.\n')
+        GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
+        if GRAPH_SESSION:
+            main_request(GRAPH_SESSION)
+
+    elif user_MAIL.status_code == 401:
+        print(38* '', 'Token has expired, attempting to get new one. Integer exception.\n')
         GRAPH_SESSION = device_flow_session(config.CLIENT_ID)
         if GRAPH_SESSION:
             main_request(GRAPH_SESSION)
