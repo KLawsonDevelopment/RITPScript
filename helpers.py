@@ -24,7 +24,7 @@ from selenium.webdriver.support import expected_conditions
 
 # Enter Code : otc, paste code here
 # Submit button for Code: idSIButton9
-# Email: i0116, testphishing@rocketit.com
+# Email: i0116, not listing here.
 # Submit button for Email : idSIButton9
 # Password: i0118, not listing here.
 # Submit button for Password: idSIButton9
@@ -78,15 +78,21 @@ def device_flow_session(client_id, auto=True):
               f'and your web browser is opening {device_code["verification_url"]}. '
               'Paste the code to sign in.')
 
+        # elif statement to check system to run proper geckodriver
+
         if platform == 'darwin':
             driver = webdriver.Firefox(executable_path='./geckodriverOSX')
         elif platform == 'win64':
             driver = webdriver.Firefox(executable_path='./geckodriver64')
         elif platform == 'win32':
             driver = webdriver.Firefox(executable_path='./geckodriver32')
+
+        #Open Driver
         
         driver.get('https://microsoft.com/devicelogin')
         time.sleep(5)
+
+        #Interface with driver to input: User Code, Username, and Password
         
         print('Sending code\n')
 
