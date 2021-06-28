@@ -26,7 +26,23 @@ def fromGet(iD, session):
 
         if 'From:' in body_data_json:
             print('Checking "From"\n')
-            fromAddress= body_data_json.rsplit('From: ', 1)[1].split('@')[1].split('>')[0]
+            if '.edu' in body_data_json:
+                fromAddress = body_data_json.split('@',1)[1].split('.edu')[0]
+
+            elif '.com' in body_data_json:
+                fromAddress = body_data_json.split('@',1)[1].split('.com')[0]
+
+            elif '.net' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.net')[0]
+
+            elif '.org' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.org')[0]
+
+            elif '.gov' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.gov')[0]
+
+            elif '.mil' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.mil')[0]  
             pprint(fromAddress)
 
             if from_data_json['toRecipients'] == []:
@@ -46,7 +62,25 @@ def fromGet(iD, session):
 
         if 'From:' in body_data_json:
             print('Checking "From"\n')
-            fromAddress = body_data_json.split('From:')[1].split('@')[1].split('>')[0]
+
+            if '.edu' in body_data_json:
+                fromAddress = body_data_json.split('@',1)[1].split('.edu')[0]
+
+            elif '.com' in body_data_json:
+                fromAddress = body_data_json.split('@',1)[1].split('.com')[0]
+
+            elif '.net' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.net')[0]
+
+            elif '.org' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.org')[0]
+
+            elif '.gov' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.gov')[0]
+
+            elif '.mil' in body_data_json:
+                fromAddress = body_data_json.split('@', 1)[1].split('.mil')[0]  
+
             pprint(fromAddress)
             if from_data_json['toRecipients'] == []:
                 pprint(from_data_json['toRecipients'])
@@ -59,8 +93,26 @@ def fromGet(iD, session):
         print("Checking 'From'\n")
         body_data_json = json.dumps(from_data_json['body']['content'].rsplit('From:',1)[1])
         body_data_json = json.loads(body_data_json)
-        print(body_data_json)
-        fromAddress = body_data_json.rsplit('@',1)[1].split('.com')[0]
+        # print(body_data_json)
+
+        if '.edu' in body_data_json:
+            fromAddress = body_data_json.split('@',1)[1].split('.edu')[0]
+
+        elif '.com' in body_data_json:
+            fromAddress = body_data_json.split('@',1)[1].split('.com')[0]
+
+        elif '.net' in body_data_json:
+            fromAddress = body_data_json.split('@', 1)[1].split('.net')[0]
+
+        elif '.org' in body_data_json:
+            fromAddress = body_data_json.split('@', 1)[1].split('.org')[0]
+
+        elif '.gov' in body_data_json:
+            fromAddress = body_data_json.split('@', 1)[1].split('.gov')[0]
+
+        elif '.mil' in body_data_json:
+            fromAddress = body_data_json.split('@', 1)[1].split('.mil')[0]                                    
+        
         pprint(fromAddress)
         if from_data_json['toRecipients'] == []:
             pprint(from_data_json['toRecipients'])

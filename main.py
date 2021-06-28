@@ -4,7 +4,8 @@
 # This set of scripts is designed by Keith Lawson, and created while working for Rocket IT. If you need development help with this program,
 # send an email to KLawsondevelopment@gmail.com or KLawson@rocketit.com 
 
-import pprint
+from logging import exception
+import requests
 import config
 import json
 import dataParsing
@@ -25,16 +26,19 @@ def main_request(session):
     #Calling API with the filter that looks for any unread emails.
 
     print('\nGet user unread messages -> https://graph.microsoft.com/v1.0/me/messages?$filter=isRead ne true')
-
-    print('API Endpoint Start')
-
-    user_MAIL = session.get(api_endpoint('me/messages?$filter=isRead ne true'))
-
+    
+    while True:
+        try:
+            user_MAIL = session.get(api_endpoint('me/messages?$filter=isRead ne true'))
+            break
+        except (requests.exceptions.RequestException, ValueError):
+            print("Timeout Occurred")
+            pass
     #Success or failure status code from the JSON
 
     print(28* ' ' + f'<Response [{user_MAIL.status_code}]>', f'bytes returned: {len(user_MAIL.text)}\n')
 
-    # user_MAIL.status_code = '401'
+    # user_MAIL.status_code = 401
 
     if user_MAIL.status_code == '401':
         print(38* '', 'Token has expired, attempting to get new one. String exception.\n')

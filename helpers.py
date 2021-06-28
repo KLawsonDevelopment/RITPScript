@@ -33,9 +33,7 @@ from selenium.webdriver.support import expected_conditions
 # Test Phishing: table, click
 # Submit button for Sign In: idSIButton9
 
-driver = webdriver.Firefox(executable_path='./geckodriver')
-driver.get('https://microsoft.com/devicelogin')
-time.sleep(5)
+
 ignored_exceptions=(NoSuchElementException,StaleElementReferenceException,)
 submitButton = 'idSIButton9'
 file = open('(oolAmber91.txt')
@@ -48,19 +46,13 @@ def api_endpoint(url):
     on the current RESOURCE and API_VERSION settings in config.py.
     """
 
-    print('Starting While loop \n')
+    time.sleep(2)
+    if urllib.parse.urlparse(url).scheme in ['http', 'https']:
+        return url # url is already complete
 
-    while True:
-        try:
-            time.sleep(2)
-            print('Grabbing URL\n')
-            if urllib.parse.urlparse(url).scheme in ['http', 'https']:
-                return url # url is already complete
-            return urllib.parse.urljoin(f'{config.RESOURCE}/{config.API_VERSION}/',
-                                        url.lstrip('/'))
-        except Exception as e:
-            print('Timeout\n')
-            pass
+    return urllib.parse.urljoin(f'{config.RESOURCE}/{config.API_VERSION}/',
+                                url.lstrip('/'))
+
 
 
 def device_flow_session(client_id, auto=True):
@@ -87,23 +79,28 @@ def device_flow_session(client_id, auto=True):
         print(f'The code {device_code["user_code"]} has been copied to your clipboard, '
               f'and your web browser is opening {device_code["verification_url"]}. '
               'Paste the code to sign in.')
+
+        driver = webdriver.Firefox(executable_path='./geckodriver')
+        driver.get('https://microsoft.com/devicelogin')
+        time.sleep(5)
+        
         print('Sending code\n')
 
-        web_interface('otc', device_code['user_code'], 'MFA Code')
+        web_interface('otc', device_code['user_code'], 'MFA Code', driver)
 
-        time.sleep(3)
+        time.sleep(5)
 
-        web_interface('i0116', email, 'email')
+        web_interface('i0116', email, 'email', driver)
 
-        time.sleep(3)
+        time.sleep(5)
 
-        web_interface('i0118', passW, 'password')
+        web_interface('i0118', passW, 'password', driver)
 
-        time.sleep(3)
+        time.sleep(5)
 
-        submit_web()
+        submit_web(driver)
 
-        time.sleep(2)
+        time.sleep(5)
 
         driver.close()
 
@@ -166,7 +163,7 @@ def send_mail(session, *, subject, recipients, body='', content_type='HTML',
                         headers={'Content-Type': 'application/json'},
                         json=email_msg)
 
-def web_interface(element, text, target):
+def web_interface(element, text, target, driver):
 
     actions = ActionChains(driver)
 
@@ -184,7 +181,7 @@ def web_interface(element, text, target):
     actions.perform()
     
 
-def submit_web():
+def submit_web(driver):
     actions = ActionChains(driver)
 
     submitElem = WebDriverWait(driver, timeout=10, ignored_exceptions=ignored_exceptions).until(expected_conditions.presence_of_element_located((By.ID, submitButton)))
