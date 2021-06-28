@@ -10,7 +10,7 @@ import config
 import json
 import dataParsing
 import time
-from sys import platform
+
 
 
 
@@ -20,7 +20,8 @@ from sys import platform
 from helpers import api_endpoint, device_flow_session
 
 def main_request(session):
-    print(platform)
+
+    #Creating a Time variable so I can see when the script last looped
 
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S")

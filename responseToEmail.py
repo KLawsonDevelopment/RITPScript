@@ -1,18 +1,18 @@
 import json
-from sys import breakpointhook
-import requests
 from pprint import pprint
-import time
-import re
 
 from helpers import api_endpoint, send_mail
 
 def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
 
+    #Create GoodorBad variables to shove strings into for the HTML.
+
     headerGoB = str
     toGoB = str
     fromGoB = str
     bodyGoB = str
+
+    #Repetitive if statement to verify what is good or bad, and set variables so that the HTML can set it properly.
 
     if headerGrade > 0:
         headerGoB = 'Good'
@@ -42,6 +42,8 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
     else:
         bodyGoB = 'Bad'
 
+    #Created an Array/DICT that searches for how many Bad checks there are.
+
     totalArray =[]
     totalArray.append(headerGoB)
     totalArray.append(toGoB)
@@ -50,9 +52,16 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
 
     immediateFail = totalArray.count('Bad')
 
+    #Add together all of the grades.
+
     totalGrade = headerGrade + toGrade + fromGrade + bodyGrade
 
     goodOrBad = str
+
+    #If Immediate Fail counts over 1 Bad in the email, fail it.
+    # If TotalGrade is above 0, it *should* be safe to open.
+    # If it's 0, say we do not know.
+    # If it's below 0, say it is not to be opened.
 
     if immediateFail > 1:
         goodOrBad = 'We believe this email should not be opened.'
@@ -63,7 +72,7 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
     else:
         goodOrBad = 'We believe this email should not be opened.'
 
-
+    # Get the mail data from the API/ID.
 
     mail_data_get = session.get(api_endpoint((f'me/messages/{iD}')))
 
@@ -72,6 +81,8 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
     to_data_json = json.loads(to_data)
 
     email_to = to_data_json['sender']['emailAddress']['address']
+
+    #Grab the email template and shove all of our data into it, and then send_response to send the email.
 
     with open('email.html') as template_file:
         template = template_file.read().format(headerGrade=headerGrade, toGrade=toGrade, fromGrade=fromGrade, bodyGrade=bodyGrade,
@@ -84,6 +95,8 @@ def respondToEmail(iD, session, headerGrade, toGrade, fromGrade, bodyGrade):
     print(28*' ' + f'<Response [{send_response.status_code}]>')
     if not send_response.ok:
         pprint.pprint(send_response.json()) # show error message
+
+    #Immediately set up a patch request variable to send to the API to mark the email as read so the loop does not continue to only do one email.
 
     patchRequest = {'isRead': True}
 
