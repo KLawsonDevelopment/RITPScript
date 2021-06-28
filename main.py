@@ -10,6 +10,7 @@ import config
 import json
 import dataParsing
 import time
+from sys import platform
 
 
 
@@ -19,6 +20,7 @@ import time
 from helpers import api_endpoint, device_flow_session
 
 def main_request(session):
+    print(platform)
 
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S")

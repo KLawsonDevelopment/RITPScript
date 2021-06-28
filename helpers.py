@@ -3,11 +3,9 @@
 # See LICENSE in the project root for license information.
 import base64
 import mimetypes
-import os
 import urllib
-import webbrowser
 import time
-import urllib3
+from sys import platform
 
 from adal import AuthenticationContext
 import pyperclip
@@ -80,7 +78,13 @@ def device_flow_session(client_id, auto=True):
               f'and your web browser is opening {device_code["verification_url"]}. '
               'Paste the code to sign in.')
 
-        driver = webdriver.Firefox(executable_path='./geckodriver')
+        if platform == 'darwin':
+            driver = webdriver.Firefox(executable_path='./geckodriverOSX')
+        elif platform == 'win64':
+            driver = webdriver.Firefox(executable_path='./geckodriver64')
+        elif platform == 'win32':
+            driver = webdriver.Firefox(executable_path='./geckodriver32')
+        
         driver.get('https://microsoft.com/devicelogin')
         time.sleep(5)
         
